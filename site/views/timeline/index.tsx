@@ -36,6 +36,7 @@ import CustomDemo from './custom-demo.vue';
 import HtmlDemo from './html-demo.vue';
 import NodeDemo from './node-demo.vue';
 import StatusDemo from './status-demo.vue';
+import VnodeDemo from './vnode-demo.vue';
 
 const timelineProps: IPropsTableItem[] = [
   {
@@ -54,14 +55,14 @@ const timelineProps: IPropsTableItem[] = [
   },
   {
     name: 'list[].tag',
-    type: 'String',
+    type: 'String | VNode',
     default: '-',
     desc: '标题（一般是时间标识）',
     optional: ['-'],
   },
   {
     name: 'list[].content',
-    type: 'String/Object',
+    type: 'String | Object | VNode',
     default: '-',
     desc: '内容',
     optional: ['-'],
@@ -114,6 +115,13 @@ const timelineProps: IPropsTableItem[] = [
     default: '-',
     desc: '配置自定义样式类名，传入的类会被加在组件最外层的 DOM .bk-timeline 上',
     optional: ['-'],
+  },
+  {
+    name: 'list[].nodeType',
+    type: 'String',
+    default: 'primary',
+    desc: '时间轴节点渲染类型，缺省值为 template 默认使用 v-html ，填写 vnode 则支持 JSX 渲染',
+    optional: ['template', 'vnode',],
   },
 ];
 const timelineEvents: IPropsTableItem[] = [
@@ -178,6 +186,15 @@ export default defineComponent({
           demoName='html-demo'
         >
           <HtmlDemo />
+        </DemoBox>
+
+        <DemoBox
+          title='使用 Vnode 渲染'
+          desc='content 和 tag 支持 vnode 类型，支持jsx语法'
+          componentName='timeline'
+          demoName='vnode-demo'
+        >
+          <VnodeDemo />
         </DemoBox>
 
         <PropsBox

@@ -195,6 +195,11 @@ export enum SwitcherThemeEnum {
   PRIMARY = 'primary',
 }
 
+export enum TimelineNodeTypeEnum {
+  TEMPLATE = 'template',
+  VNODE = 'vnode',
+}
+
 export function SwitcherThemeType() {
   return toType<`${SwitcherThemeEnum}`>('switcherTheme', {}).def(SwitcherThemeEnum.SUCCESS);
 }
@@ -280,6 +285,18 @@ export class PropTypes extends propTypesNS {
     return toType<TypeEnum>('InfoType', {
       validator: (val: TypeEnum) => {
         if (!val || type.includes(val)) {
+          return true;
+        }
+        return false;
+      },
+    });
+  }
+
+  static timelineNodeType() {
+    const types = ['template', 'vnode'] as const;
+    return toType<`${TimelineNodeTypeEnum}`>('TimelineNodeType', {
+      validator:(val: `${TimelineNodeTypeEnum}`) => {
+        if (!val || types.includes(val)) {
           return true;
         }
         return false;

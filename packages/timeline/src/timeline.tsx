@@ -40,6 +40,7 @@ const timelineProps = {
       icon: PropTypes.func,
       filled: PropTypes.bool,
       border: PropTypes.bool,
+      nodeType: PropTypes.timelineNodeType(),
     }).isRequired,
   ),
   titleAble: PropTypes.bool.def(false),
@@ -73,6 +74,7 @@ export default defineComponent({
           icon: item.icon,
           filled: item.filled,
           border: item.border ?? true,
+          nodeType: item.nodeType || 'template',
         }));
       },
       {
@@ -114,6 +116,9 @@ export default defineComponent({
       if (this.$slots.content) {
         return <div class={`${this.resolveClassName('timeline-content')}`}>{this.$slots.content(item)}</div>;
       }
+      if (item.nodeType === 'vnode') {
+        return <div class={`${this.resolveClassName('timeline-content')}`}>{item.content}</div>
+      }
       return (
         <div
           class={`${this.resolveClassName('timeline-content')}`}
@@ -145,7 +150,9 @@ export default defineComponent({
                   class={`${this.resolveClassName('timeline-title')}`}
                   onClick={() => this.handleTitleSelect(item)}
                 >
-                  {this.$slots.default?.(item) ?? <span v-html={item.tag}></span>}
+                  {
+                    item.nodeType === 'vnode' ? item.tag :  (<span v-html={item.tag}></span>)
+                  }
                 </div>
               }
               {renderContent(item)}
